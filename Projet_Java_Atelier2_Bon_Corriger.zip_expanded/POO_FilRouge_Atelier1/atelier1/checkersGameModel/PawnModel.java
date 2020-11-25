@@ -1,6 +1,7 @@
 package atelier1.checkersGameModel;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
@@ -65,10 +66,13 @@ public class PawnModel implements PieceModel {
 	@Override
 	public List<Coord> getCoordsOnItinerary(Coord targetCoord) {
 		
-		List<Coord> coordsOnItinerary = null;
+		List<Coord> coordsOnItinerary = new ArrayList<Coord>();
 		
-        int deltaColonne = targetCoord.getColonne()-this.getCoord().getColonne();
-        int deltaLigne = targetCoord.getLigne()-this.getCoord().getLigne();
+//        int deltaColonne = targetCoord.getColonne()-this.getCoord().getColonne();
+//        int deltaLigne = targetCoord.getLigne()-this.getCoord().getLigne();
+        
+        int deltaColonne = this.getCoord().getColonne()-targetCoord.getColonne();
+        int deltaLigne = this.getCoord().getLigne()-targetCoord.getLigne();
         
         if(Math.abs(deltaColonne) > 1 && Math.abs(deltaLigne) > 1) 
         {

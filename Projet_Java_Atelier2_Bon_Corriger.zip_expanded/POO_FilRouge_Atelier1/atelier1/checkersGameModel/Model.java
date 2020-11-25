@@ -77,23 +77,25 @@ public class Model implements BoardGame<Coord> {
 
 			// V�rif si d�placement en diagonale est possible avec le bon pas
 			// Pour l'instant, on ne teste que le d�placement sans prise
-			List<Coord> piecesPrises = implementor.getCoordsOnItinerary(initCoord, targetCoord);
-			if(piecesPrises != null) {
+			List<Coord> piecesAManger = implementor.getCoordsOnItinerary(initCoord, targetCoord);
+			if(piecesAManger != null) {
 				
-				//if(piecesPrises.size() == 1) {
+				if(piecesAManger.size() == 1) { //si il n'y a qu'une piece sur le chemin
 					
-				
-					PieceSquareColor couleurPieceCourrante = implementor.getPieceColor(piecesPrises.get(0));
-					if(couleurPieceCourrante != this.currentColor && couleurPieceCourrante != null) {
+					System.out.println(piecesAManger);
+					
+					PieceSquareColor couleurPieceAManger = this.implementor.getPieceColor(piecesAManger.get(0));
+					System.out.println(piecesAManger.get(0));
+					if(couleurPieceAManger != null && couleurPieceAManger != this.currentColor) {
 						isPieceToTake = true;
-					//}
+					}
 
 				}
 				
 			}
 			
 			isMoveOk = this.implementor.isMovePieceOk(initCoord, targetCoord, isPieceToTake ); //isPieceToTake = Tru/False
-			
+
 			this.isPieceToMove = isMoveOk;
 		}
 		return isMoveOk;
