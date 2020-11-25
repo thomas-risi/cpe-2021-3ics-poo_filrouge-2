@@ -2,6 +2,7 @@ package atelier1.checkersGameGui;
 
 
 import atelier1.checkersGameModel.BoardGame;
+import atelier1.checkersGameModel.Model;
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
 import javafx.event.EventHandler;
@@ -15,7 +16,7 @@ import javafx.scene.layout.Pane;
 /**
  * @author francoiseperrin
  * <p>
- * Cette classe représente le damier de la vue
+ * Cette classe reprï¿½sente le damier de la vue
  * <p>
  * Elle tire les valeurs d'affichage d'une fabrique de constante (GuiConfig)
  * 		public final static int size = 10;
@@ -26,13 +27,13 @@ class Board extends GridPane {
 
 	private final BoardGame<Integer> controller;
 
-	private int selectedPieceIndex;						// index de la pièce à déplacer 
+	private int selectedPieceIndex;						// index de la piï¿½ce ï¿½dï¿½placer 
 
 	private int nbCol, nbLig;                			// le nb de ligne et de colonne du damier
 	private double height;								// taille du damier en pixel
 
-	private EventHandler<MouseEvent> squareListener;    // l'écouteur d'évènements souris sur les carrés du damier
-	private EventHandler<MouseEvent> pieceListener;    	// l'écouteur d'évènements souris sur les pièces
+	private EventHandler<MouseEvent> squareListener;    // l'ï¿½couteur d'ï¿½vï¿½nements souris sur les carrï¿½s du damier
+	private EventHandler<MouseEvent> pieceListener;    	// l'ï¿½couteur d'ï¿½vï¿½nements souris sur les piï¿½ces
 
 	public Board (BoardGame<Integer> controller) {
 		super();
@@ -59,22 +60,22 @@ class Board extends GridPane {
 		for (int ligne = 0; ligne < this.nbLig; ligne++) {
 
 			for (int col = 0; col < this.nbCol; col++) {
-				// sélection de la couleur de la case
+				// sï¿½lection de la couleur de la case
 				if ((col % 2 == 0 && ligne % 2 == 0) || (col % 2 != 0 && ligne % 2 != 0)) {
 					squareColor = PieceSquareColor.WHITE;
 				} else {
 					squareColor = PieceSquareColor.BLACK;
 				}
 
-				// création d'un Pane
+				// crï¿½ation d'un Pane
 				square = GuiFactory.createSquare(squareColor);
 
-				// ajout d'un écouteur sur le carré
+				// ajout d'un ï¿½couteur sur le carrï¿½
 				square.setOnMouseClicked(squareListener);
 
 				// gestion de la taille des Pane
-				square.setPrefHeight(this.height/this.nbLig);	// TODO - à  remplacer : bad practice
-				square.setPrefWidth(this.height/this.nbCol);	// TODO - à  remplacer : bad practice
+				square.setPrefHeight(this.height/this.nbLig);	// TODO - ï¿½ remplacer : bad practice
+				square.setPrefWidth(this.height/this.nbCol);	// TODO - ï¿½ remplacer : bad practice
 
 				// ajout du carre sur le damier
 				this.add(square, col, ligne);
@@ -90,10 +91,10 @@ class Board extends GridPane {
 		int whiteIndex;
 
 		// ajout pions noirs et blancs sur les cases noires des 4 lignes du haut et du bas
-		// Rq : les index des carrés sur le damier varient de 0 à  nbLig*nbLig-1 (=99)
+		// Rq : les index des carrï¿½s sur le damier varient de 0 ï¿½ nbLig*nbLig-1 (=99)
 		for (int j = 0; j < this.nbLig * 4; j += 2) {
 
-			// recherche index du carré noir qui contient la pièce noire ou blanche
+			// recherche index du carrï¿½ noir qui contient la piï¿½ce noire ou blanche
 			if ((j / this.nbLig) % 2 == 0) {
 				blackIndex = j + 1;
 				whiteIndex = this.nbLig * this.nbLig - j - 2;
@@ -102,7 +103,7 @@ class Board extends GridPane {
 				whiteIndex = this.nbLig * this.nbLig - j - 1;
 			}
 
-			// ajout effectif du pion noir puis du pion blanc sur les carrés identifiés
+			// ajout effectif du pion noir puis du pion blanc sur les carrï¿½s identifiï¿½s
 			addPieceOnSquare((Pane) this.getChildren().get(blackIndex), PieceSquareColor.BLACK);
 			addPieceOnSquare((Pane) this.getChildren().get(whiteIndex), PieceSquareColor.WHITE);
 		}
@@ -112,21 +113,21 @@ class Board extends GridPane {
 
 	/**
 	 * @param targetSquare
-	 * @param pieceColor   Création d'une pièce et ajout dans le bon carré noir
+	 * @param pieceColor   Crï¿½ation d'une piï¿½ce et ajout dans le bon carrï¿½ noir
 	 */
 	private void addPieceOnSquare (Pane targetSquare, PieceSquareColor pieceColor) {
 
 		Canvas pieceGUI;
 
-		// création de la pièce
+		// crï¿½ation de la piï¿½ce
 		pieceGUI = GuiFactory.createPiece(pieceColor);
 
-		// ajout d'un écouteur de souris
-		// si la pièce est sélectionnée, elle sera supprimé de son emplacement actuel
-		// et repositionnée sur une autre case
+		// ajout d'un ï¿½couteur de souris
+		// si la piï¿½ce est sï¿½lectionnï¿½e, elle sera supprimï¿½ de son emplacement actuel
+		// et repositionnï¿½e sur une autre case
 		pieceGUI.setOnMouseClicked(this.pieceListener);
 
-		// Ajout de la pièce sur le carré noir
+		// Ajout de la piï¿½ce sur le carrï¿½ noir
 		targetSquare.getChildren().add(pieceGUI);
 
 	}
@@ -135,24 +136,24 @@ class Board extends GridPane {
 	 * @param selectedSquareIndex
 	 * @param targetSquareIndex
 	 * @param tookPieceIndex
-	 * Cette méthode est appelée par l'écouteur SquareListener
-	 * lorsqu'une case est cliquée afin d'y déposer une pièce précédemment sélectionnée
-	 * la promouvoir éventuellement en dame et supprimer l'éventuelle pièce capturée
+	 * Cette mï¿½thode est appelï¿½e par l'ï¿½couteur SquareListener
+	 * lorsqu'une case est cliquï¿½e afin d'y dï¿½poser une piï¿½ce prï¿½cï¿½demment sï¿½lectionnï¿½e
+	 * la promouvoir ï¿½ventuellement en dame et supprimer l'ï¿½ventuelle piï¿½ce capturï¿½e
 	 */
 	private void movePieceOnGui(int selectedSquareIndex, int targetSquareIndex, int tookPieceIndex) {
 
-		// la PieceGui de la vue est effectivement déplacée
+		// la PieceGui de la vue est effectivement dï¿½placï¿½e
 		Board.this.movePiece(selectedSquareIndex, targetSquareIndex);
 		
-		// seul le déplacement est géré dans cette version
+		// seul le dï¿½placement est gï¿½rï¿½ dans cette version
 	}
 
 	/**
 	 * @param selectedSquareIndex
 	 * @param targetSquareIndex 
-	 * Cette méthode est appelée indirectement par l'écouteur SquareListener
-	 * lorsqu'un carré est cliqué afin d'y déposer une pièce précédemment sélectionnée
-	 * à travers movePieceOnGui()
+	 * Cette mï¿½thode est appelï¿½e indirectement par l'ï¿½couteur SquareListener
+	 * lorsqu'un carrï¿½ est cliquï¿½ afin d'y dï¿½poser une piï¿½ce prï¿½cï¿½demment sï¿½lectionnï¿½e
+	 * ï¿½ travers movePieceOnGui()
 	 */
 	private void movePiece (int selectedSquareIndex, int targetSquareIndex) {
 
@@ -172,29 +173,29 @@ class Board extends GridPane {
 	 * 
 	 * @param removeSquare
 	 * 
-	 * Cette méthode est appelée indirectement par l'écouteur SquareListener
-	 * suppression effective d'une pièce
+	 * Cette mï¿½thode est appelï¿½e indirectement par l'ï¿½couteur SquareListener
+	 * suppression effective d'une piï¿½ce
 	 */
 	private void removePiece(int tookPieceIndex) {
 
-		// clear le carré d'origine de la pièce supprimée
+		// clear le carrï¿½ d'origine de la piï¿½ce supprimï¿½e
 		Pane tookPieceSquare = (Pane) Board.this.getChildren().get(tookPieceIndex);
 		tookPieceSquare.getChildren().clear();
 	}
 
 	/**
 	 * @return selectedPieceIndex
-	 * Cette méthode est appelée par l'écouteur SquareListener
-	 * lorsqu'un clic est effectué sur une case après qu'une 
-	 * pièce ait été sélectionnée
+	 * Cette mï¿½thode est appelï¿½e par l'ï¿½couteur SquareListener
+	 * lorsqu'un clic est effectuï¿½ sur une case aprï¿½s qu'une 
+	 * piï¿½ce ait ï¿½tï¿½ sï¿½lectionnï¿½e
 	 */
 	private int getSelectedPieceIndex() {
 		return this.selectedPieceIndex;
 	}
 	/**
 	 * @param selectedPieceIndex 
-	 * Cette méthode est appelée par l'écouteur PieceListener
-	 * lorsqu'un clic est effectué sur une pièce avant de la déplacer
+	 * Cette mï¿½thode est appelï¿½e par l'ï¿½couteur PieceListener
+	 * lorsqu'un clic est effectuï¿½ sur une piï¿½ce avant de la dï¿½placer
 	 */
 	private void setSelectedPieceIndex (int selectedPieceIndex) {
 		this.selectedPieceIndex =  selectedPieceIndex;
@@ -202,8 +203,8 @@ class Board extends GridPane {
 
 	/**
 	 * @return controller
-	 * Cette méthode est appelé par les écouteurs de cases et de pièces
-	 * pour connaitre le controller à qui "parler"
+	 * Cette mï¿½thode est appelï¿½ par les ï¿½couteurs de cases et de piï¿½ces
+	 * pour connaitre le controller ï¿½ qui "parler"
 	 */
 	private BoardGame<Integer> getController() {
 		return this.controller;
@@ -213,8 +214,8 @@ class Board extends GridPane {
 	/**
 	 * @author francoise.perrin
 	 *
-	 * Objet qui écoute les événements Souris sur les cases du damier
-	 * et agit en conséquence 
+	 * Objet qui ï¿½coute les ï¿½vï¿½nements Souris sur les cases du damier
+	 * et agit en consï¿½quence 
 	 */
 	private class SquareListener implements EventHandler<MouseEvent> {
 
@@ -223,18 +224,32 @@ class Board extends GridPane {
 
 			int selectedSquareIndex = Board.this.getSelectedPieceIndex();
 
-			// Recherche SquareGUI sélectionné
+			// Recherche SquareGUI sï¿½lectionnï¿½
 			Pane square = (Pane) mouseEvent.getSource();
 			int targetSquareIndex = Board.this.getChildren().indexOf(square);
 
-			// Pour l'instant, on ne supprime pas les pièces pouvant se trouver sur le trajet 
-			int tookPieceIndex = 0;
+			BoardGame<Integer> controller2 = Board.this.getController();
+			boolean isPieceOk = controller2.isMovePieceOk(selectedSquareIndex, targetSquareIndex);
+			
+			
+			
+			if(isPieceOk) {
+				
+				Integer tookPieceIndex = Board.this.controller.movePiece(selectedSquareIndex, targetSquareIndex);
+					
+					Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
+					
 
-			// la PieceGui de la vue est effectivement déplacée et éventuellement promue
-			// l'éventuelle pièce intermédiaire est supprimée dans la vue
-			Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
+			}
+			
+			// Pour l'instant, on ne supprime pas les piï¿½ces pouvant se trouver sur le trajet 
+			//Ancien Code Bon int tookPieceIndex = 0;
 
-			// On évite que le parent ne récupère l'event
+			// la PieceGui de la vue est effectivement dï¿½placï¿½e et ï¿½ventuellement promue
+			// l'ï¿½ventuelle piï¿½ce intermï¿½diaire est supprimï¿½e dans la vue
+			//Ancien code Bon Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
+
+			// On ï¿½vite que le parent ne rï¿½cupï¿½re l'event
 			mouseEvent.consume();
 		}
 
@@ -245,22 +260,22 @@ class Board extends GridPane {
 	/**
 	 * @author francoise.perrin
 	 *
-	 * Objet qui écoute les événements Souris sur les cases du damier
-	 * et agit en conséquence 
+	 * Objet qui ï¿½coute les ï¿½vï¿½nements Souris sur les cases du damier
+	 * et agit en consï¿½quence 
 	 */
 	private class PieceListener implements EventHandler<MouseEvent> {
 
 		@Override
 		public void handle (MouseEvent mouseEvent) {
 
-			// Recherche PieceGui sélectionnée
+			// Recherche PieceGui sï¿½lectionnï¿½e
 			Canvas selectedPiece = (Canvas) mouseEvent.getSource();
 
-			// Recherche coordonnée du carré 
+			// Recherche coordonnï¿½e du carrï¿½ 
 			Pane parentSquare = (Pane)  selectedPiece.getParent();
 			int squareIndex = Board.this.getChildren().indexOf(parentSquare);
 
-			// l'index de la PieceGui de la vue à déplacer est fixée
+			// l'index de la PieceGui de la vue ï¿½ dï¿½placer est fixï¿½e
 			Board.this.setSelectedPieceIndex(squareIndex);
 
 			mouseEvent.consume();

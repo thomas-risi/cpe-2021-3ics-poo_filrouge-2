@@ -3,6 +3,7 @@ package atelier1.checkersGameModel;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
@@ -10,26 +11,26 @@ import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
  * @author francoise.perrin
  * 
  * Cete classe fabrique et stocke toutes les PieceModel du Model dans une collection 
- * elle est donc responsable de rechercher et mettre à jour les PieceModel (leur position)
+ * elle est donc responsable de rechercher et mettre ï¿½ jour les PieceModel (leur position)
  * 
- * En revanche, elle n'est pas responsable des algorithme métiers liés au déplacement des pièces
- * (responsabilité de la classe Model)
+ * En revanche, elle n'est pas responsable des algorithme mï¿½tiers liï¿½s au dï¿½placement des piï¿½ces
+ * (responsabilitï¿½ de la classe Model)
  */
 public class ModelImplementor {
 
-	// la collection de pièces en jeu - mélange noires et blanches
+	// la collection de piï¿½ces en jeu - mï¿½lange noires et blanches
 	private Collection<PieceModel> pieces = null;	
 
 	public ModelImplementor() {
 		super();
 		pieces = new LinkedList<PieceModel>();
 
-		// Création des pièces blanches et ajout dans la collection de pièces
+		// Crï¿½ation des piï¿½ces blanches et ajout dans la collection de piï¿½ces
 		for ( Coord coord : ModelConfig.WHITE_PIECE_COORDS){
 			pieces.add(new PawnModel(coord, PieceSquareColor.WHITE));
 		}
 
-		// Création des pièces noires et ajout dans la collection de pièces
+		// Crï¿½ation des piï¿½ces noires et ajout dans la collection de piï¿½ces
 		for ( Coord coord : ModelConfig.BLACK_PIECE_COORDS){
 			pieces.add(new PawnModel(coord, PieceSquareColor.BLACK));
 		}
@@ -72,12 +73,25 @@ public class ModelImplementor {
 		return isMovePieceDone;
 	}
 
+	
+	public List<Coord>  getCoordsOnItinerary(Coord initCoord, Coord targetCoord) {
+		List<Coord>  coordPieceToTake = null;
+		PieceModel initPiece = this.findPiece(initCoord); //trouver la piece
+		
+		if(initPiece != null) //si la piece existe
+		{
+			coordPieceToTake = initPiece.getCoordsOnItinerary(targetCoord);
+		}
+		
+		return coordPieceToTake;
+	}
+	
 	/**
 	 * @param coord
-	 * @return la pièce qui se trouve aux coordonnées indiquées
+	 * @return la piï¿½ce qui se trouve aux coordonnï¿½es indiquï¿½es
 	 */
-	PieceModel findPiece(Coord coord) {		// visibilité Package pour etre testé dans TestCherchersGameModel
-		//	private PieceModel findPiece(Coord coord) {		// A décommenter après les tests
+	PieceModel findPiece(Coord coord) {		// visibilitï¿½ Package pour etre testï¿½ dans TestCherchersGameModel
+		//	private PieceModel findPiece(Coord coord) {		// A dï¿½commenter aprï¿½s les tests
 		PieceModel findPiece = null;
 
 		for(PieceModel piece : this.pieces) {
@@ -95,8 +109,8 @@ public class ModelImplementor {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 * 
-	 * La méthode toStrong() retourne une représentation 
-	 * de la liste de pièces sous forme d'un tableau 2D
+	 * La mï¿½thode toStrong() retourne une reprï¿½sentation 
+	 * de la liste de piï¿½ces sous forme d'un tableau 2D
 	 * 
 	 */
 	public String toString() {
@@ -104,7 +118,7 @@ public class ModelImplementor {
 		String st = "";
 		String[][] damier = new String[ModelConfig.LENGTH][ModelConfig.LENGTH];
 
-		// création d'un tableau 2D avec les noms des pièces à partir de la liste de pièces
+		// crï¿½ation d'un tableau 2D avec les noms des piï¿½ces ï¿½ partir de la liste de piï¿½ces
 		for(PieceModel piece : this.pieces) {
 
 			PieceSquareColor color = piece.getPieceColor();
@@ -115,7 +129,7 @@ public class ModelImplementor {
 			damier[lig][col ] = stColor ;
 		}
 
-		// Affichage du tableau formatté
+		// Affichage du tableau formattï¿½
 		st = "     a      b      c      d      e      f      g      h      i      j\n";
 		for ( int lig = 9; lig >=0 ; lig--) {
 			st += (lig+1) + "  ";
@@ -132,8 +146,4 @@ public class ModelImplementor {
 		}
 		return "Damier du model \n" + st;	
 	}
-
-
-
-
 }

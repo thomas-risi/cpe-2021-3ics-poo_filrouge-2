@@ -1,23 +1,25 @@
 package atelier1.checkersGameModel;
 
 
+import java.util.List;
+
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
 /**
  * @author francoise.perrin
  *
- * Cette classe gère les aspects métiers du jeu de dame
- * indépendement de toute vue
+ * Cette classe gï¿½re les aspects mï¿½tiers du jeu de dame
+ * indï¿½pendement de toute vue
  * 
- * Elle délègue à son objet ModelImplementor 
+ * Elle dï¿½lï¿½gue ï¿½ son objet ModelImplementor 
  * le stockage des PieceModel dans une collection
  * 
- * Les pièces sont capables de se déplacer d'une case en diagonale 
+ * Les piï¿½ces sont capables de se dï¿½placer d'une case en diagonale 
  * si la case de destination est vide
  * 
- * Ne sont pas gérés les prises, les rafles, les dames, 
+ * Ne sont pas gï¿½rï¿½s les prises, les rafles, les dames, 
  * ni le fait que lorsqu'une prise est possible
- * une autre pièce ne doit pas être jouée
+ * une autre piï¿½ce ne doit pas ï¿½tre jouï¿½e
  * 
  */
 public class Model implements BoardGame<Coord> {
@@ -25,7 +27,7 @@ public class Model implements BoardGame<Coord> {
 	private PieceSquareColor currentColor;	// couleur du joueur courant
 
 	private ModelImplementor implementor = null;
-	private boolean isPieceToMove;			// pièce à  déplacer
+	private boolean isPieceToMove;			// piï¿½ce ï¿½ dï¿½placer
 
 	public Model() {
 		super();
@@ -36,7 +38,7 @@ public class Model implements BoardGame<Coord> {
 
 	/**
 	 * @param coord
-	 * @return true si la PieceModel qui se trouve aux coordonnées indiquées 
+	 * @return true si la PieceModel qui se trouve aux coordonnï¿½es indiquï¿½es 
 	 * est de la couleur du joueur courant 
 	 */
 	@Override
@@ -53,10 +55,10 @@ public class Model implements BoardGame<Coord> {
 	/**
 	 * @param initCoord
 	 * @param targetCoord
-	 * @return true si le déplacement est légal
+	 * @return true si le dï¿½placement est lï¿½gal
 	 * (s'effectue en diagonale, POUR L'INSTANT sans prise)
-	 * La PieceModel qui se trouve aux coordonnées passées en paramètre 
-	 * est capable de répondre à  cette question (par l'intermédiare du ModelImplementor)
+	 * La PieceModel qui se trouve aux coordonnï¿½es passï¿½es en paramï¿½tre 
+	 * est capable de rï¿½pondre ï¿½ cette question (par l'intermï¿½diare du ModelImplementor)
 	 * 
 	 */
 	@Override
@@ -64,17 +66,34 @@ public class Model implements BoardGame<Coord> {
 
 		boolean isMoveOk = false;
 		this.isPieceToMove = false;
-
-		// s'il existe une pièce à  déplacer, 
-		// et que case d'arrivée est inoccupée et dans les limites du damier
+		boolean isPieceToTake = false;
+		
+		
+		// s'il existe une piï¿½ce ï¿½ dï¿½placer, 
+		// et que case d'arrivï¿½e est inoccupï¿½e et dans les limites du damier
 		if(this.implementor.isPiecehere(initCoord) &&
 				Coord.coordonnees_valides(targetCoord) &&
 				!this.implementor.isPiecehere(targetCoord)) {
 
-			// Vérif si déplacement en diagonale est possible avec le bon pas
-			// Pour l'instant, on ne teste que le déplacement sans prise
-			isMoveOk = this.implementor.isMovePieceOk(initCoord, targetCoord, false ) ;
+			// Vï¿½rif si dï¿½placement en diagonale est possible avec le bon pas
+			// Pour l'instant, on ne teste que le dï¿½placement sans prise
+			List<Coord> piecesPrises = implementor.getCoordsOnItinerary(initCoord, targetCoord);
+			if(piecesPrises != null) {
+				
+				//if(piecesPrises.size() == 1) {
+					
+				
+					PieceSquareColor couleurPieceCourrante = implementor.getPieceColor(piecesPrises.get(0));
+					if(couleurPieceCourrante != this.currentColor && couleurPieceCourrante != null) {
+						isPieceToTake = true;
+					//}
 
+				}
+				
+			}
+			
+			isMoveOk = this.implementor.isMovePieceOk(initCoord, targetCoord, isPieceToTake ); //isPieceToTake = Tru/False
+			
 			this.isPieceToMove = isMoveOk;
 		}
 		return isMoveOk;
@@ -91,10 +110,10 @@ public class Model implements BoardGame<Coord> {
 
 		Coord tookPieceCoord = null;
 
-		// si le déplacement est légal
+		// si le dï¿½placement est lï¿½gal
 		if (this.isPieceToMove) {
 
-			// déplacement effectif de la pièce
+			// dï¿½placement effectif de la piï¿½ce
 			this.implementor.movePiece(initCoord, targetCoord);
 			
 			// changement joueur courant 
@@ -102,7 +121,7 @@ public class Model implements BoardGame<Coord> {
 					PieceSquareColor.BLACK : PieceSquareColor.WHITE;
 		}
 		System.out.println(this);
-
+		
 		return  tookPieceCoord;
 	}
 

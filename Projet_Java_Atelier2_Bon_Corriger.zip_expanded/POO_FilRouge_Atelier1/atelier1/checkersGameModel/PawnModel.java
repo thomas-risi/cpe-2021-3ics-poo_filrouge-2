@@ -43,7 +43,7 @@ public class PawnModel implements PieceModel {
 		int ligDistance = targetCoord.getLigne() - this.getCoord().getLigne();
 		int deltaLig = (int) Math.signum(ligDistance);
 		
-		// Cas d'un déplacement en diagonale
+		// Cas d'un dï¿½placement en diagonale
 		if (Math.abs(colDistance) == Math.abs(ligDistance)){
 			
 			// sans prise
@@ -67,7 +67,13 @@ public class PawnModel implements PieceModel {
 		
 		List<Coord> coordsOnItinerary = null;
 		
-		// ToDo
+        int deltaColonne = targetCoord.getColonne()-this.getCoord().getColonne();
+        int deltaLigne = targetCoord.getLigne()-this.getCoord().getLigne();
+        
+        if(Math.abs(deltaColonne) > 1 && Math.abs(deltaLigne) > 1) 
+        {
+            coordsOnItinerary.add(new Coord((char) (targetCoord.getColonne()+Math.signum(deltaColonne)), (int) (targetCoord.getLigne()+Math.signum(deltaLigne))));
+        }
 		
 		return coordsOnItinerary;
 	}
