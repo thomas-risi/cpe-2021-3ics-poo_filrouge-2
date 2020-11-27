@@ -131,16 +131,16 @@ public class Model implements BoardGame<Coord> {
 					PieceSquareColor.BLACK : PieceSquareColor.WHITE;
 					
 		}
+		
+		
+		removePiece(tookPieceCoord);
 		System.out.println(this);
-		
-		
 		//tookPieceCoord = this.pieceToTakeCoord;
 		
 		return  tookPieceCoord;
 	}
 
-	@Override
-	public void removePiece(Coord Coord) {
+	private void removePiece(Coord Coord) {
 		
 		this.implementor.removePiece(Coord);
 			

@@ -34,7 +34,7 @@ public interface BoardGame<T>  {
 	 */
 	public T movePiece(T initCoord, T targetCoord);
 	
-	public void removePiece(T Coord);
+	//public void removePiece(T Coord);
 
 
 }

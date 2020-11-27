@@ -149,7 +149,7 @@ class Board extends GridPane {
 		
 		if(tookPieceIndex != -1) {
 			removePiece(tookPieceIndex);
-			controller.removePiece(tookPieceIndex);
+
 		}
 		
 		// seul le d�placement est g�r� dans cette version
@@ -246,7 +246,7 @@ class Board extends GridPane {
 				Integer tookPieceIndex = getController().movePiece(selectedSquareIndex, targetSquareIndex);
 					
 					Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
-									
+
 
 			}
 			

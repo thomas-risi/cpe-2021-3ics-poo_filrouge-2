@@ -77,13 +77,13 @@ public class Controller implements BoardGame<Integer> {
 		return tookPieceIndex;
 	}
 
-	public void removePiece(Integer tookPieceIndex) {
-		
-		Coord tookPieceIndexCoord = transformIndexToCoord(tookPieceIndex);
-		//System.out.println("took piece index" + tookPieceIndexCoord);
-		this.model.removePiece(tookPieceIndexCoord);
-		
-	}
+//	public void removePiece(Integer tookPieceIndex) {
+//		
+//		Coord tookPieceIndexCoord = transformIndexToCoord(tookPieceIndex);
+//		//System.out.println("took piece index" + tookPieceIndexCoord);
+//		this.model.removePiece(tookPieceIndexCoord);
+//		
+//	}
 	
 	/**
 	 * @param squareIndex
