@@ -104,7 +104,20 @@ public class ModelImplementor {
 		return findPiece;
 	}
 
-
+public void removePiece(Coord tookPieceCoord) {
+	
+	if(findPiece(tookPieceCoord) != null) {
+		//System.out.println("tookPieceCoord" + tookPieceCoord);
+		PieceModel pieceASupr = findPiece(tookPieceCoord);
+		pieces.remove(pieceASupr);
+		
+	}
+	
+//	for(PieceModel piece : pieces) {
+//		System.out.println(piece);
+//	}
+	
+}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

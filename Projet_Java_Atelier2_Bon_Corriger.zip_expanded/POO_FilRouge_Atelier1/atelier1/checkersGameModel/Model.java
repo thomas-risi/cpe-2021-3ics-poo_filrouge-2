@@ -28,6 +28,7 @@ public class Model implements BoardGame<Coord> {
 
 	private ModelImplementor implementor = null;
 	private boolean isPieceToMove;			// pi�ce � d�placer
+	private Coord pieceToTakeCoord;
 
 	public Model() {
 		super();
@@ -67,7 +68,7 @@ public class Model implements BoardGame<Coord> {
 		boolean isMoveOk = false;
 		this.isPieceToMove = false;
 		boolean isPieceToTake = false;
-		
+		this.pieceToTakeCoord = null;
 		
 		// s'il existe une pi�ce � d�placer, 
 		// et que case d'arriv�e est inoccup�e et dans les limites du damier
@@ -88,6 +89,10 @@ public class Model implements BoardGame<Coord> {
 					System.out.println(piecesAManger.get(0));
 					if(couleurPieceAManger != null && couleurPieceAManger != this.currentColor) {
 						isPieceToTake = true;
+						
+						this.pieceToTakeCoord = piecesAManger.get(0);
+						
+						
 					}
 
 				}
@@ -115,18 +120,32 @@ public class Model implements BoardGame<Coord> {
 		// si le d�placement est l�gal
 		if (this.isPieceToMove) {
 
+			tookPieceCoord = this.pieceToTakeCoord;
+			//System.out.println("TOOK PIECE : " + tookPieceCoord );
+			
 			// d�placement effectif de la pi�ce
 			this.implementor.movePiece(initCoord, targetCoord);
 			
 			// changement joueur courant 
 			this.currentColor = (PieceSquareColor.WHITE).equals(this.currentColor) ?
 					PieceSquareColor.BLACK : PieceSquareColor.WHITE;
+					
 		}
 		System.out.println(this);
+		
+		
+		//tookPieceCoord = this.pieceToTakeCoord;
 		
 		return  tookPieceCoord;
 	}
 
+	@Override
+	public void removePiece(Coord Coord) {
+		
+		this.implementor.removePiece(Coord);
+			
+		}
+	
 	@Override
 	public String toString() {
 		return implementor.toString();

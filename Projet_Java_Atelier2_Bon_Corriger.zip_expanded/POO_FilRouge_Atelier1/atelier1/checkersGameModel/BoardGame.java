@@ -3,7 +3,7 @@ package atelier1.checkersGameModel;
 /**
  * @author francoise.perrin
  *
- * Cette interface définit le comportement attendu des jeux de plateau
+ * Cette interface dï¿½finit le comportement attendu des jeux de plateau
  * @param <T>
  * 
  * 
@@ -12,16 +12,16 @@ public interface BoardGame<T>  {
 
 	/**
 	 * @param coord
-	 * @return true si la PieceModel qui se trouve aux coordonnées indiquées 
-	 * est déplaçable :
-	 * a minima de la couleur du joueur courant et à terme, celle qui rapporte le plus de coup
+	 * @return true si la PieceModel qui se trouve aux coordonnï¿½es indiquï¿½es 
+	 * est dï¿½plaï¿½able :
+	 * a minima de la couleur du joueur courant et ï¿½ terme, celle qui rapporte le plus de coup
 	 */
 	public boolean isPieceMoveable(T  coord) ;
 
 	/**
 	 * @param initCoord
 	 * @param targetCoord
-	 * @return true si le déplacement est légal
+	 * @return true si le dï¿½placement est lï¿½gal
 	 * 
 	 */
 	public boolean isMovePieceOk(T initCoord, T targetCoord) ;
@@ -30,9 +30,11 @@ public interface BoardGame<T>  {
 	/**
 	 * @param initCoord
 	 * @param targetCoord
-	 * @return éventuellement les coordonnées de la pièce capturée 
+	 * @return ï¿½ventuellement les coordonnï¿½es de la piï¿½ce capturï¿½e 
 	 */
 	public T movePiece(T initCoord, T targetCoord);
+	
+	public void removePiece(T Coord);
 
 
 }

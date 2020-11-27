@@ -145,6 +145,13 @@ class Board extends GridPane {
 		// la PieceGui de la vue est effectivement d�plac�e
 		Board.this.movePiece(selectedSquareIndex, targetSquareIndex);
 		
+		//System.out.println("Avant Cond GUI" + tookPieceIndex);
+		
+		if(tookPieceIndex != -1) {
+			removePiece(tookPieceIndex);
+			controller.removePiece(tookPieceIndex);
+		}
+		
 		// seul le d�placement est g�r� dans cette version
 	}
 
@@ -231,14 +238,15 @@ class Board extends GridPane {
 			BoardGame<Integer> controller2 = Board.this.getController();
 			boolean isPieceOk = controller2.isMovePieceOk(selectedSquareIndex, targetSquareIndex);
 			
-			
+			//int tookPieceIndex = 0;
 			
 			if(isPieceOk) {
 				
-				Integer tookPieceIndex = Board.this.controller.movePiece(selectedSquareIndex, targetSquareIndex);
+				//Integer tookPieceIndex = Board.this.controller.movePiece(selectedSquareIndex, targetSquareIndex);
+				Integer tookPieceIndex = getController().movePiece(selectedSquareIndex, targetSquareIndex);
 					
 					Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
-					
+									
 
 			}
 			
