@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class LauncherAtelier1 extends Application {
+public class LauncherAtelier2 extends Application {
 
 	private BoardGame<Coord> model;
 	private BoardGame<Integer> controller;
@@ -21,7 +21,7 @@ public class LauncherAtelier1 extends Application {
 	
 	public static void main (String[] args) {
 
-		LauncherAtelier1.launch();
+		LauncherAtelier2.launch();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class LauncherAtelier1 extends Application {
 	public void start (Stage primaryStage) {
 
 		primaryStage.setScene(new Scene(this.view, GuiConfig.HEIGHT, GuiConfig.HEIGHT));
-		primaryStage.setTitle("Super Jeu de dames V1");
+		primaryStage.setTitle("Ceci est la fenetre de mon jeu de dames - Version Atelier 2");
 		primaryStage.show();
 	}
 

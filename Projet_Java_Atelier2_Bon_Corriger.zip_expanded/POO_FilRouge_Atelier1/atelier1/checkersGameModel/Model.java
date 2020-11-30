@@ -16,19 +16,21 @@ import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
  * 
  * Les pi�ces sont capables de se d�placer d'une case en diagonale 
  * si la case de destination est vide
+ * ou de 2 cases en diagonale s'il existe une pi�ce
+ * du jeu oppos� � prendre sur le trajet
  * 
- * Ne sont pas g�r�s les prises, les rafles, les dames, 
+ * Ne sont pas g�r�s les rafles, les dames, 
  * ni le fait que lorsqu'une prise est possible
  * une autre pi�ce ne doit pas �tre jou�e
  * 
  */
-public class Model implements BoardGame<Coord> {
+public class Model implements BoardGame<Coord>  {
 
 	private PieceSquareColor currentColor;	// couleur du joueur courant
 
 	private ModelImplementor implementor = null;
 	private boolean isPieceToMove;			// pi�ce � d�placer
-	private Coord pieceToTakeCoord;
+	private Coord pieceToTakeCoord;			// Coordonn�es pi�ce � prendre � retourner � la vue
 
 	public Model() {
 		super();
@@ -57,7 +59,7 @@ public class Model implements BoardGame<Coord> {
 	 * @param initCoord
 	 * @param targetCoord
 	 * @return true si le d�placement est l�gal
-	 * (s'effectue en diagonale, POUR L'INSTANT sans prise)
+	 * (s'effectue en diagonale, avec ou sans prise)
 	 * La PieceModel qui se trouve aux coordonn�es pass�es en param�tre 
 	 * est capable de r�pondre � cette question (par l'interm�diare du ModelImplementor)
 	 * 
@@ -65,52 +67,72 @@ public class Model implements BoardGame<Coord> {
 	@Override
 	public boolean isMovePieceOk(Coord initCoord, Coord targetCoord) {
 
-		boolean isMoveOk = false;
-		this.isPieceToMove = false;
-		boolean isPieceToTake = false;
-		this.pieceToTakeCoord = null;
+		boolean isMovePossible = false;
 		
+		this.isPieceToMove = false;
+		this.pieceToTakeCoord = null;
+
 		// s'il existe une pi�ce � d�placer, 
 		// et que case d'arriv�e est inoccup�e et dans les limites du damier
 		if(this.implementor.isPiecehere(initCoord) &&
 				Coord.coordonnees_valides(targetCoord) &&
 				!this.implementor.isPiecehere(targetCoord)) {
 
-			// V�rif si d�placement en diagonale est possible avec le bon pas
-			// Pour l'instant, on ne teste que le d�placement sans prise
-			List<Coord> piecesAManger = implementor.getCoordsOnItinerary(initCoord, targetCoord);
-			if(piecesAManger != null) {
+
+			// on r�cup�re la liste des coordonn�es des cases sur la trajectoire
+			// s'il n'existe qu'1 seule pi�ce � prendre d'une autre couleur sur la trajectoire
+			// ou qu'il n'existe pas de pi�ce � prendre, alors, on teste si le d�placement est l�gal
+			
+			boolean isPieceTotake = false;
+			List<Coord> coordsOnItinerary = this.implementor.getCoordsOnItinerary(initCoord, targetCoord);
+			
+			if (coordsOnItinerary != null) {
 				
-				if(piecesAManger.size() == 1) { //si il n'y a qu'une piece sur le chemin
-					
-					System.out.println(piecesAManger);
-					
-					PieceSquareColor couleurPieceAManger = this.implementor.getPieceColor(piecesAManger.get(0));
-					System.out.println(piecesAManger.get(0));
-					if(couleurPieceAManger != null && couleurPieceAManger != this.currentColor) {
-						isPieceToTake = true;
-						
-						this.pieceToTakeCoord = piecesAManger.get(0);
-						
-						
+				// Pas de prise potentielle
+				if (coordsOnItinerary.isEmpty() ) {	
+					isMovePossible = true;
+					isPieceTotake = false; 
+				}
+				// il existe des cases vides ou occup�es sur la trajectoire
+				else { 
+					int count = 0;
+					Coord potentialPieceToTakeCoord = null;
+					for (Coord coordOnItinerary : coordsOnItinerary) {
+						if (this.implementor.isPiecehere(coordOnItinerary)) {
+							count++;
+							potentialPieceToTakeCoord = coordOnItinerary;
+						}
+					}
+					// Toutes les cases sont vides (deplacement pour les dames)
+					if (count == 0) {	
+						isMovePossible = true; 
+					}
+					// Prise possible
+					if (count == 1 && this.implementor.getPieceColor(initCoord) != 
+							this.implementor.getPieceColor(potentialPieceToTakeCoord)) {
+						isMovePossible = true;
+						isPieceTotake = true;
+						this.pieceToTakeCoord = potentialPieceToTakeCoord; 
 					}
 
 				}
-				
 			}
-			
-			isMoveOk = this.implementor.isMovePieceOk(initCoord, targetCoord, isPieceToTake ); //isPieceToTake = Tru/False
 
-			this.isPieceToMove = isMoveOk;
+			// V�rif si d�placement en diagonale est possible avec le bon pas en fonction
+			// de s'il y a 1 pi�ce � prendre ou pas
+			if (isMovePossible) { 
+				isMovePossible = this.implementor.isMovePieceOk(initCoord, targetCoord, isPieceTotake ) ;
+			}
 		}
-		return isMoveOk;
+		this.isPieceToMove = isMovePossible;
+
+		return isMovePossible;
 	}
-
-
+	
 	/**
 	 * @param initCoord
 	 * @param targetCoord
-	 * @return null car POUR L'INSTANT, test sans prise 
+	 * @returnles coordonn�es de la pi�ce qui a �ventuellement �t� prise 
 	 */
 	@Override
 	public Coord movePiece(Coord initCoord, Coord targetCoord) {
@@ -120,32 +142,24 @@ public class Model implements BoardGame<Coord> {
 		// si le d�placement est l�gal
 		if (this.isPieceToMove) {
 
-			tookPieceCoord = this.pieceToTakeCoord;
-			//System.out.println("TOOK PIECE : " + tookPieceCoord );
-			
 			// d�placement effectif de la pi�ce
 			this.implementor.movePiece(initCoord, targetCoord);
 			
+			// suppression �ventuelle
+			if (this.pieceToTakeCoord != null) {
+				tookPieceCoord = this.pieceToTakeCoord;
+				this.implementor.removePiece(this.pieceToTakeCoord);
+			}
+
 			// changement joueur courant 
 			this.currentColor = (PieceSquareColor.WHITE).equals(this.currentColor) ?
 					PieceSquareColor.BLACK : PieceSquareColor.WHITE;
-					
 		}
-		
-		
-		removePiece(tookPieceCoord);
 		System.out.println(this);
-		//tookPieceCoord = this.pieceToTakeCoord;
-		
+
 		return  tookPieceCoord;
 	}
 
-	private void removePiece(Coord Coord) {
-		
-		this.implementor.removePiece(Coord);
-			
-		}
-	
 	@Override
 	public String toString() {
 		return implementor.toString();

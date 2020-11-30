@@ -3,7 +3,7 @@ package atelier1.checkersGameModel;
 /**
  * @author francoiseperrin
  *
- * Coordonnées des PieceModel
+ * Coordonnï¿½es des PieceModel
  */
 public class Coord implements Comparable<Coord>{
 

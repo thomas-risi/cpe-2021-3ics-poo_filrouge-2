@@ -2,16 +2,13 @@ package atelier1.checkersGameGui;
 
 
 import atelier1.checkersGameModel.BoardGame;
-import atelier1.checkersGameModel.Model;
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
-
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-
 
 /**
  * @author francoiseperrin
@@ -26,8 +23,8 @@ import javafx.scene.layout.Pane;
 class Board extends GridPane {
 
 	private final BoardGame<Integer> controller;
-
-	private int selectedPieceIndex;						// index de la pi�ce �d�placer 
+	
+	private int selectedPieceIndex;						// index de la pi�ce � d�placer 
 
 	private int nbCol, nbLig;                			// le nb de ligne et de colonne du damier
 	private double height;								// taille du damier en pixel
@@ -129,6 +126,7 @@ class Board extends GridPane {
 
 		// Ajout de la pi�ce sur le carr� noir
 		targetSquare.getChildren().add(pieceGUI);
+		
 
 	}
 
@@ -144,15 +142,11 @@ class Board extends GridPane {
 
 		// la PieceGui de la vue est effectivement d�plac�e
 		Board.this.movePiece(selectedSquareIndex, targetSquareIndex);
-		
-		//System.out.println("Avant Cond GUI" + tookPieceIndex);
-		
-		if(tookPieceIndex != -1) {
-			removePiece(tookPieceIndex);
 
+		// l'�ventuelle pi�ce interm�diaire est supprim�e dans la vue
+		if (tookPieceIndex>1) {
+			Board.this.removePiece(tookPieceIndex);
 		}
-		
-		// seul le d�placement est g�r� dans cette version
 	}
 
 	/**
@@ -180,7 +174,7 @@ class Board extends GridPane {
 	 * 
 	 * @param removeSquare
 	 * 
-	 * Cette m�thode est appel�e indirectement par l'�couteur SquareListener
+	 * Cette m�thode est appel�e par l'�couteur SquareListener
 	 * suppression effective d'une pi�ce
 	 */
 	private void removePiece(int tookPieceIndex) {
@@ -217,7 +211,8 @@ class Board extends GridPane {
 		return this.controller;
 	}
 
-	
+
+
 	/**
 	 * @author francoise.perrin
 	 *
@@ -228,34 +223,25 @@ class Board extends GridPane {
 
 		@Override
 		public void handle (MouseEvent mouseEvent) {
-
+			BoardGame<Integer> controller = Board.this.getController();
 			int selectedSquareIndex = Board.this.getSelectedPieceIndex();
 
 			// Recherche SquareGUI s�lectionn�
 			Pane square = (Pane) mouseEvent.getSource();
 			int targetSquareIndex = Board.this.getChildren().indexOf(square);
 
-			BoardGame<Integer> controller2 = Board.this.getController();
-			boolean isPieceOk = controller2.isMovePieceOk(selectedSquareIndex, targetSquareIndex);
-			
-			//int tookPieceIndex = 0;
-			
-			if(isPieceOk) {
-				
-				//Integer tookPieceIndex = Board.this.controller.movePiece(selectedSquareIndex, targetSquareIndex);
-				Integer tookPieceIndex = getController().movePiece(selectedSquareIndex, targetSquareIndex);
-					
-					Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
+			// Si le model confirme que la pi�ce peut �tre d�plac�e � cet endroit, 
+			// la PieceGui de la vue est effectivement d�plac�e
+			// la PieceModel du model est effectivement d�plac�e
+			if(controller.isMovePieceOk(selectedSquareIndex, targetSquareIndex)) {
 
+				// la PieceModel du model est effectivement d�plac�e
+				int tookPieceIndex = controller.movePiece(selectedSquareIndex, targetSquareIndex);
 
+				// la PieceGui de la vue est effectivement d�plac�e et �ventuellement promue
+				// l'�ventuelle pi�ce interm�diaire est supprim�e dans la vue
+				Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
 			}
-			
-			// Pour l'instant, on ne supprime pas les pi�ces pouvant se trouver sur le trajet 
-			//Ancien Code Bon int tookPieceIndex = 0;
-
-			// la PieceGui de la vue est effectivement d�plac�e et �ventuellement promue
-			// l'�ventuelle pi�ce interm�diaire est supprim�e dans la vue
-			//Ancien code Bon Board.this.movePieceOnGui(selectedSquareIndex, targetSquareIndex, tookPieceIndex);
 
 			// On �vite que le parent ne r�cup�re l'event
 			mouseEvent.consume();
@@ -264,7 +250,6 @@ class Board extends GridPane {
 	}
 
 
-	
 	/**
 	 * @author francoise.perrin
 	 *
@@ -275,6 +260,7 @@ class Board extends GridPane {
 
 		@Override
 		public void handle (MouseEvent mouseEvent) {
+			BoardGame<Integer> controller = Board.this.getController();
 
 			// Recherche PieceGui s�lectionn�e
 			Canvas selectedPiece = (Canvas) mouseEvent.getSource();
@@ -283,13 +269,17 @@ class Board extends GridPane {
 			Pane parentSquare = (Pane)  selectedPiece.getParent();
 			int squareIndex = Board.this.getChildren().indexOf(parentSquare);
 
-			// l'index de la PieceGui de la vue � d�placer est fix�e
-			Board.this.setSelectedPieceIndex(squareIndex);
+			// Si le model confirme que la pi�ce peut �tre d�plac�e, 
+			// l'index de la PieceGui de la vue est fix�e
+			if (controller.isPieceMoveable(squareIndex)) {
+				Board.this.setSelectedPieceIndex(squareIndex);
+			}
 
 			mouseEvent.consume();
 		}
 	}
 
+	
 
 }
 

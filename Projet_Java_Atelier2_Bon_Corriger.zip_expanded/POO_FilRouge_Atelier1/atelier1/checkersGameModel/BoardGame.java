@@ -33,8 +33,6 @@ public interface BoardGame<T>  {
 	 * @return �ventuellement les coordonn�es de la pi�ce captur�e 
 	 */
 	public T movePiece(T initCoord, T targetCoord);
-	
-	//public void removePiece(T Coord);
 
 
 }

@@ -1,5 +1,6 @@
 package atelier1.checkersGameController;
 
+
 import atelier1.checkersGameModel.BoardGame;
 import atelier1.checkersGameModel.Coord;
 import atelier1.checkersGameModel.ModelConfig;
@@ -77,14 +78,6 @@ public class Controller implements BoardGame<Integer> {
 		return tookPieceIndex;
 	}
 
-//	public void removePiece(Integer tookPieceIndex) {
-//		
-//		Coord tookPieceIndexCoord = transformIndexToCoord(tookPieceIndex);
-//		//System.out.println("took piece index" + tookPieceIndexCoord);
-//		this.model.removePiece(tookPieceIndexCoord);
-//		
-//	}
-	
 	/**
 	 * @param squareIndex
 	 * @param length
@@ -105,8 +98,5 @@ public class Controller implements BoardGame<Integer> {
 		}
 		return squareIndex;
 	}
-
-
-
 
 }

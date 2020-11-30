@@ -34,7 +34,6 @@ public class ModelImplementor {
 		for ( Coord coord : ModelConfig.BLACK_PIECE_COORDS){
 			pieces.add(new PawnModel(coord, PieceSquareColor.BLACK));
 		}
-
 	}
 
 	public PieceSquareColor getPieceColor(Coord coord) {
@@ -63,7 +62,7 @@ public class ModelImplementor {
 
 
 	public boolean movePiece(Coord initCoord, Coord targetCoord) {
-		
+
 		boolean isMovePieceDone = false;
 		PieceModel initPiece = this.findPiece(initCoord);
 		if (initPiece != null) {
@@ -73,19 +72,25 @@ public class ModelImplementor {
 		return isMovePieceDone;
 	}
 
-	
-	public List<Coord>  getCoordsOnItinerary(Coord initCoord, Coord targetCoord) {
-		List<Coord>  coordPieceToTake = null;
-		PieceModel initPiece = this.findPiece(initCoord); //trouver la piece
-		
-		if(initPiece != null) //si la piece existe
-		{
-			coordPieceToTake = initPiece.getCoordsOnItinerary(targetCoord);
+	public List<Coord> getCoordsOnItinerary(Coord initCoord, Coord targetCoord) {
+		List<Coord> coordsOnItinerary = null;
+		PieceModel initPiece = this.findPiece(initCoord);
+		if (initPiece != null) {
+			coordsOnItinerary = initPiece.getCoordsOnItinerary(targetCoord) ;
 		}
-		
-		return coordPieceToTake;
+
+		return coordsOnItinerary;
 	}
-	
+
+	public void removePiece(Coord pieceToTakeCoord) {
+
+		PieceModel pieceToTake = this.findPiece(pieceToTakeCoord);
+		if (pieceToTake != null) {
+			pieces.remove(pieceToTake);
+		}
+	}
+
+
 	/**
 	 * @param coord
 	 * @return la pi�ce qui se trouve aux coordonn�es indiqu�es
@@ -104,20 +109,7 @@ public class ModelImplementor {
 		return findPiece;
 	}
 
-public void removePiece(Coord tookPieceCoord) {
-	
-	if(findPiece(tookPieceCoord) != null) {
-		//System.out.println("tookPieceCoord" + tookPieceCoord);
-		PieceModel pieceASupr = findPiece(tookPieceCoord);
-		pieces.remove(pieceASupr);
-		
-	}
-	
-//	for(PieceModel piece : pieces) {
-//		System.out.println(piece);
-//	}
-	
-}
+
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -159,4 +151,10 @@ public void removePiece(Coord tookPieceCoord) {
 		}
 		return "Damier du model \n" + st;	
 	}
+
+
+
+
+
+
 }

@@ -1,6 +1,7 @@
 package atelier1.checkersGameGui;
 
 
+
 import atelier1.checkersGameModel.BoardGame;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -15,7 +16,7 @@ import javafx.scene.layout.Pane;
  * Elle d�l�gue a un objet la gestion de l'affichage du damier
  * 
  */
-public class View extends GridPane{
+public class View extends GridPane {
 
 	public View (BoardGame<Integer> controller) {
 		super();
@@ -30,51 +31,43 @@ public class View extends GridPane{
 
 		// cr�ation d'un fond d'�cran qui contiendra le damier + les axes (atelier 2)
 		BorderPane checkersBoard = new BorderPane();	
-		
+
 		// ajout du damier au centre du fond d'�cran
 		checkersBoard.setCenter(board);
-		
+
+		// ajout des axes sur les cot�s du damier
+		checkersBoard.setTop(createHorizontalAxis());
+		checkersBoard.setBottom(createHorizontalAxis());
+		checkersBoard.setLeft(createVerticalAxis());
+		checkersBoard.setRight(createVerticalAxis());
+
 		// ajout du fond d'�cran � la vue
 		this.add(checkersBoard, 0, 1);
-		
-		//partie Label
-		
-		//Création de deux nouvelles grilles pour stocker les labels
-		GridPane gridColonnes = new GridPane();
-		GridPane gridLignes = new GridPane();
-
-		int compteurColonne = 0;
-		
-		for(char i = 'A'; i <= 'J'; i++)
-		{
-			
-			//char nomColonne = i;
-			String convString = Character.toString(i); //conv de char à string
-			//System.out.printf(convString);
-			Label nomColonne = new Label(convString); // creation et affectation label
-			//Label nomColonne = new Label("stpmarche");
-			nomColonne.setPrefWidth(100);
-			nomColonne.setAlignment(Pos.CENTER);
-			gridColonnes.add(nomColonne, compteurColonne, 0);
-			compteurColonne++;
-		}
-		
-		int compteurLigne  = 0;
-		for(int i = 10; i >= 1; i--)
-		{
-			
-			String convString = Integer.toString(i); //conv de i à string
-			Label nomLignes = new Label(convString); // creation et affectation label
-			nomLignes.setPrefHeight(100);
-			nomLignes.setAlignment(Pos.CENTER);
-			gridLignes.add(nomLignes, 0, compteurLigne);
-			compteurLigne++;
-		}
-		
-		checkersBoard.setTop(gridColonnes); //ajoute la grille créé en haut
-		checkersBoard.setLeft(gridLignes); //ajoute la grille créé en haut
 	}
 
+	private GridPane createHorizontalAxis() {
+		GridPane pane = new GridPane();
+
+		for (char c = 'a'; c<='j'; c++){
+			Label label1 = new Label(String.valueOf(c));
+			label1.setAlignment(Pos.CENTER);
+			label1.setPrefHeight(10);
+			label1.setPrefWidth(60);
+			pane.add(label1, c-'a', 0);
+		}
+		return pane;
+	}
+
+	private GridPane createVerticalAxis() {
+		GridPane pane = new GridPane();
+		for (int c = 10; c>=1; c--){
+			Label label1 = new Label(String.valueOf(c));
+			label1.setPrefHeight(60);
+			label1.setPrefWidth(20);
+			pane.add(label1, 0, 10-c+1);
+		}
+		return pane;
+	}
 }
 
 

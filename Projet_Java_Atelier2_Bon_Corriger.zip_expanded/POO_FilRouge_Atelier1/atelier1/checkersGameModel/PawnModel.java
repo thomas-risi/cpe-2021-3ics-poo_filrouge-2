@@ -1,7 +1,8 @@
 package atelier1.checkersGameModel;
 
 
-import java.util.ArrayList;
+
+import java.util.LinkedList;
 import java.util.List;
 
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
@@ -62,25 +63,32 @@ public class PawnModel implements PieceModel {
 		}
 		return ret;
 	}
-
+	
 	@Override
 	public List<Coord> getCoordsOnItinerary(Coord targetCoord) {
 		
-		List<Coord> coordsOnItinerary = new ArrayList<Coord>();
+		List<Coord> coordsOnItinery = new LinkedList<Coord>(); 
+		int initCol = this.getCoord().getColonne();
+		int initLig = this.getCoord().getLigne();
+		int colDistance = targetCoord.getColonne() - this.getCoord().getColonne();
+		int ligDistance = targetCoord.getLigne() - this.getCoord().getLigne();
+		int deltaLig = (int) Math.signum(ligDistance);
+		int deltaCol = (int) Math.signum(colDistance);
 		
-//        int deltaColonne = targetCoord.getColonne()-this.getCoord().getColonne();
-//        int deltaLigne = targetCoord.getLigne()-this.getCoord().getLigne();
-        
-        int deltaColonne = this.getCoord().getColonne()-targetCoord.getColonne();
-        int deltaLigne = this.getCoord().getLigne()-targetCoord.getLigne();
-        
-        if(Math.abs(deltaColonne) > 1 && Math.abs(deltaLigne) > 1) 
-        {
-            coordsOnItinerary.add(new Coord((char) (targetCoord.getColonne()+Math.signum(deltaColonne)), (int) (targetCoord.getLigne()+Math.signum(deltaLigne))));
-        }
+		// V�rif d�placement en diagonale
+		if (Math.abs(colDistance) == Math.abs(ligDistance)){
+			
+			// recherche coordonn�es des cases travers�es
+			for (int i = 1; i < Math.abs(colDistance); i++) {
+				Coord coord = new Coord((char) (initCol + i*deltaCol), initLig + i*deltaLig);
+				coordsOnItinery.add(coord);
+			}
+		}
 		
-		return coordsOnItinerary;
+		return coordsOnItinery;
 	}
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -89,8 +97,6 @@ public class PawnModel implements PieceModel {
 	public String toString() {
 		return " ["+pieceColor.toString().charAt(0) + coord + "]";
 	}
-
-	
 
 
 }
