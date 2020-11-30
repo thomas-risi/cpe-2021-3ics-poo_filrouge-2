@@ -119,42 +119,75 @@ public class ModelImplementor {
 	 * de la liste de pi�ces sous forme d'un tableau 2D
 	 * 
 	 */
+	
+	
+	
 	public String toString() {
 
 		String st = "";
 		String[][] damier = new String[ModelConfig.LENGTH][ModelConfig.LENGTH];
-
+		int compteur = 1;
+		
 		// cr�ation d'un tableau 2D avec les noms des pi�ces � partir de la liste de pi�ces
 		for(PieceModel piece : this.pieces) {
 
-			PieceSquareColor color = piece.getPieceColor();
-			String stColor = (PieceSquareColor.WHITE.equals(color) ? "--B--" : "--N--" );
-
-			int col = piece.getCoord().getColonne()-'a';
-			int lig = piece.getCoord().getLigne() -1;
-			damier[lig][col ] = stColor ;
-		}
-
-		// Affichage du tableau formatt�
-		st = "     a      b      c      d      e      f      g      h      i      j\n";
-		for ( int lig = 9; lig >=0 ; lig--) {
-			st += (lig+1) + "  ";
-			for ( int col = 0; col <= 9; col++) {					 
-				String stColor = damier[lig][col];				
-				if (stColor != null) {						
-					st += stColor + "  ";	
-				} 
-				else {
-					st += "-----  ";
-				}
+			//PieceSquareColor color = piece.getPieceColor();
+			st += piece.toString();
+			
+			if(compteur % 5 == 0) {
+				st += "\n"; 
+				//System.out.println("\n");
 			}
-			st +="\n";
+			compteur +=1;
 		}
-		return "Damier du model \n" + st;	
+		
+//		// Affichage du tableau formatt�
+//		for ( int lig = 9; lig >=0 ; lig--) {
+//			st += (lig+1) + "  ";
+//			for ( int col = 0; col <= 9; col++) {					 
+//				String stColor = damier[lig][col];				
+//				if (stColor != null) {						
+//					st += stColor + "  ";	
+//				} 
+//			}
+//			st +="\n";
+//		}
+		return "Damier du model \n" + st;
 	}
 
 
-
+//	public String toString() {
+//
+//		String st = "";
+//		String[][] damier = new String[ModelConfig.LENGTH][ModelConfig.LENGTH];
+//
+//		// cr�ation d'un tableau 2D avec les noms des pi�ces � partir de la liste de pi�ces
+//		for(PieceModel piece : this.pieces) {
+//
+//			PieceSquareColor color = piece.getPieceColor();
+//		String stColor = (PieceSquareColor.WHITE.equals(color) ? "--B--" : "--N--" );
+//			int col = piece.getCoord().getColonne()-'a';
+//			int lig = piece.getCoord().getLigne() -1;
+//			damier[lig][col ] = stColor ;
+//		}
+//
+//		// Affichage du tableau formatt�
+//		st = "     a      b      c      d      e      f      g      h      i      j\n";
+//		for ( int lig = 9; lig >=0 ; lig--) {
+//			st += (lig+1) + "  ";
+//			for ( int col = 0; col <= 9; col++) {					 
+//				String stColor = damier[lig][col];				
+//				if (stColor != null) {						
+//					st += stColor + "  ";	
+//				} 
+//				else {
+//					st += "-----  ";
+//				}
+//			}
+//			st +="\n";
+//		}
+//		return "Damier du model \n" + st;	
+//	}
 
 
 
