@@ -8,35 +8,15 @@ import java.util.List;
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
 
-public class PawnModel implements PieceModel {
-
-	private Coord coord;
-	private PieceSquareColor pieceColor;
+public class PawnModel extends AbstractPieceModel {
 	
-	private int direction;
+	protected int direction;
 	
 	public PawnModel(Coord coord, PieceSquareColor pieceColor) {
-		super();
-		this.coord = coord;
-		this.pieceColor = pieceColor;
+		super(coord, pieceColor);
 		this.direction = PieceSquareColor.BLACK.equals(this.getPieceColor()) ? -1 : 1;
 	}
-
-	@Override
-	public Coord getCoord() {
-		return coord;
-	}
-
-	@Override
-	public void move(Coord coord) {
-		this.coord = coord; 
-	}
-
-	@Override
-	public PieceSquareColor getPieceColor() {
-		return pieceColor;
-	}
-
+	
 	@Override
 	public boolean isMoveOk(Coord targetCoord, boolean isPieceToTake) {
 		boolean ret = false;
@@ -63,41 +43,5 @@ public class PawnModel implements PieceModel {
 		}
 		return ret;
 	}
-	
-	@Override
-	public List<Coord> getCoordsOnItinerary(Coord targetCoord) {
-		
-		List<Coord> coordsOnItinery = new LinkedList<Coord>(); 
-		int initCol = this.getCoord().getColonne();
-		int initLig = this.getCoord().getLigne();
-		int colDistance = targetCoord.getColonne() - this.getCoord().getColonne();
-		int ligDistance = targetCoord.getLigne() - this.getCoord().getLigne();
-		int deltaLig = (int) Math.signum(ligDistance);
-		int deltaCol = (int) Math.signum(colDistance);
-		
-		// V�rif d�placement en diagonale
-		if (Math.abs(colDistance) == Math.abs(ligDistance)){
-			
-			// recherche coordonn�es des cases travers�es
-			for (int i = 1; i < Math.abs(colDistance); i++) {
-				Coord coord = new Coord((char) (initCol + i*deltaCol), initLig + i*deltaLig);
-				coordsOnItinery.add(coord);
-			}
-		}
-		
-		return coordsOnItinery;
-	}
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return " ["+pieceColor.toString().charAt(0) + coord + "]";
-	}
-
-
 }
 

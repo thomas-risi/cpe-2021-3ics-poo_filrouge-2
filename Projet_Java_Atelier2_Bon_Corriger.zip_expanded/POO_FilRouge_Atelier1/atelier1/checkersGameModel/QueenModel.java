@@ -10,61 +10,35 @@ import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
  *
  *le mode de d�placement et de prise de la reine est diff�rent de celui du pion
  */ 
-public class QueenModel implements PieceModel {
-	private Coord coord;
-	private PieceSquareColor pieceColor;
+public class QueenModel extends AbstractPieceModel {
 	
 	public QueenModel(Coord coord, PieceSquareColor pieceColor) {
-		super();
-		
-		// ToDo 
+		super(coord, pieceColor);
 		
 	}
-
-	@Override
-	public Coord getCoord() {
-		Coord ret = null;
-
-		// ToDo 
-		
-		return ret;
-	}
-
-	@Override
-	public void move(Coord coord) {
-
-		// ToDo 
-		
-	}
-
-	@Override
-	public PieceSquareColor getPieceColor() {
-		PieceSquareColor ret = null;
-
-		// ToDo 
-		
-		return ret;
-	}
-
+	
 	@Override
 	public boolean isMoveOk(Coord targetCoord, boolean isPieceToTake) {
 		boolean ret = false;
 
-		// ToDo 
+		int colDistance = targetCoord.getColonne() - this.getCoord().getColonne();
+		int ligDistance = targetCoord.getLigne() - this.getCoord().getLigne();
+		int deltaLig = (int) Math.signum(ligDistance);
 		
+		// Cas d'un d�placement en diagonale
+		if (Math.abs(colDistance) == Math.abs(ligDistance)){
+			
+			// sans prise
+			if (!isPieceToTake) {
+					ret = true;
+			}
+			// avec prise
+			else {
+					ret = true;
+			}
+		}
 		return ret;
 	}
-
-	@Override
-	public List<Coord> getCoordsOnItinerary(Coord targetCoord) {
-		
-		List<Coord> coordsOnItinerary = null;
-		
-		// ToDo
-		
-		return coordsOnItinerary;
-	}
 	
-
 }
 

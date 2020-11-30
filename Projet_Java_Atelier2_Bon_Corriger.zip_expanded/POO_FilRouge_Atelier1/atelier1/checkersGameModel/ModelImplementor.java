@@ -27,6 +27,7 @@ public class ModelImplementor {
 
 		// Cr�ation des pi�ces blanches et ajout dans la collection de pi�ces
 		for ( Coord coord : ModelConfig.WHITE_PIECE_COORDS){
+			//pieces.add(new QueenModel(coord, PieceSquareColor.WHITE));
 			pieces.add(new PawnModel(coord, PieceSquareColor.WHITE));
 		}
 

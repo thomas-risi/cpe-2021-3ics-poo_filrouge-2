@@ -57,7 +57,7 @@ public class LauncherAtelier2 extends Application {
 	public void start (Stage primaryStage) {
 
 		primaryStage.setScene(new Scene(this.view, GuiConfig.HEIGHT, GuiConfig.HEIGHT));
-		primaryStage.setTitle("Ceci est la fenetre de mon jeu de dames - Version Atelier 2");
+		primaryStage.setTitle("Super Jeu de Dame Version Deluxe Premium Edition Plus Plus ");
 		primaryStage.show();
 	}
 
