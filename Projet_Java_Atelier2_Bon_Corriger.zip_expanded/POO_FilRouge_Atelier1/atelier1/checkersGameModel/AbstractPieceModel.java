@@ -1,11 +1,14 @@
 package atelier1.checkersGameModel;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
-public abstract class AbstractPieceModel implements PieceModel {
+public abstract class AbstractPieceModel implements PieceModel{
 
 	protected Coord coord;
 	protected PieceSquareColor pieceColor;
@@ -19,7 +22,38 @@ public abstract class AbstractPieceModel implements PieceModel {
 	
 	}
 	
+//	public List<PieceModel> triageColonne(List<PieceModel> pieces) {
+//		
+//		pieces.sort(new Comparator<PieceModel>() {
+//		
+//				@Override
+//				public int compare(PieceModel piece1, PieceModel piece2) {
+//					
+//					//int comparaison = piece1.getCoord().getColonne() - piece2.getCoord().getColonne(); // Renvoi 0 si égale, -1 si inférieur ou +1 si suppérieur
+//					
+//					int comparaisonLigne = piece1.getCoord().compareTo(piece2.getCoord());
+//					int comparaisonColonne = piece1.getCoord().getColonne() - piece2.getCoord().getColonne();
+//					int comparaison = comparaisonColonne - comparaisonLigne;
+//					
+//					return comparaison;
+//					
+//				}});
+//		
+//			return pieces;
+//	}
+
 	
+	@Override
+	public int compareTo(PieceModel piece2) {
+		
+		
+		int comparaisonLigne = this.getCoord().compareTo(piece2.getCoord());
+		int comparaisonColonne = this.getCoord().getColonne() - piece2.getCoord().getColonne();
+		int comparaison = comparaisonColonne + comparaisonLigne;
+		
+		return comparaison;
+	}
+
 	public List<Coord> getCoordsOnItinerary(Coord targetCoord) {
 		
 		List<Coord> coordsOnItinery = new LinkedList<Coord>(); 
@@ -62,5 +96,6 @@ public abstract class AbstractPieceModel implements PieceModel {
 	public String toString() {
 		return " ["+pieceColor.toString().charAt(0) + coord + "]";
 	}
+	
 	
 }

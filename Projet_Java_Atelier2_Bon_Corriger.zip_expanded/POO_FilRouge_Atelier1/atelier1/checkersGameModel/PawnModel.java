@@ -8,7 +8,7 @@ import java.util.List;
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
 
-public class PawnModel extends AbstractPieceModel {
+public class PawnModel extends AbstractPieceModel implements Promotable {
 	
 	protected int direction;
 	
@@ -42,6 +42,25 @@ public class PawnModel extends AbstractPieceModel {
 			}
 		}
 		return ret;
+	}
+
+	@Override
+	public boolean isPromotable() {
+		boolean isPromotable= false;
+		//PieceSquareColor couleur = this.pieceColor;
+		int direction = this.direction;
+		int ligne = this.getCoord().getLigne();
+		
+		
+		if(direction == 1 && ligne == 10) {
+			isPromotable = true;			//La pièce est blanche et elle est sur la ligne 10
+		}
+		
+		if(direction == -1 && ligne == 1) { // La pièce est noire et elle est sur la ligne 1
+			isPromotable = true;
+		}
+		
+		return isPromotable;
 	}
 }
 

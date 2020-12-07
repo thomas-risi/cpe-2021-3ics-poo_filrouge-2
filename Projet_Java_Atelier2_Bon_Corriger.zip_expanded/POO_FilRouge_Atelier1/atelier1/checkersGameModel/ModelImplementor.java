@@ -1,9 +1,14 @@
 package atelier1.checkersGameModel;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.w3c.dom.views.AbstractView;
 
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
@@ -19,7 +24,7 @@ import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 public class ModelImplementor {
 
 	// la collection de pi�ces en jeu - m�lange noires et blanches
-	private Collection<PieceModel> pieces = null;	
+	private List<PieceModel> pieces = null;	
 
 	public ModelImplementor() {
 		super();
@@ -69,7 +74,18 @@ public class ModelImplementor {
 		if (initPiece != null) {
 			initPiece.move(targetCoord) ;
 			isMovePieceDone = true;
+			
+			PawnModel pawnModel= new PawnModel(targetCoord, initPiece.getPieceColor());
+			if(pawnModel.isPromotable()) {
+				PieceSquareColor couleurAvantSuppr = getPieceColor(targetCoord);
+				removePiece(targetCoord);
+				QueenModel queenModel = new QueenModel(targetCoord, couleurAvantSuppr);
+				pieces.add(queenModel);
+				
+			}
+			
 		}
+		
 		return isMovePieceDone;
 	}
 
@@ -126,15 +142,58 @@ public class ModelImplementor {
 
 		String st = "";
 		String[][] damier = new String[ModelConfig.LENGTH][ModelConfig.LENGTH];
+		
+		
+		
+		
+//		pieces.sort(new Comparator<PieceModel>() {
+//
+//			@Override
+//			public int compare(PieceModel piece1, PieceModel piece2) {
+//				
+//				int comparaison = piece2.getCoord().getLigne() - piece1.getCoord().getLigne(); // Renvoi 0 si égale, -1 si inférieur ou +1 si suppérieur
+//				
+//				return comparaison;
+//				
+//			}});
+//		
+//		pieces.sort(new Comparator<PieceModel>() {
+//
+//			@Override
+//			public int compare(PieceModel piece1, PieceModel piece2) {
+//				
+//				int comparaison = piece1.getCoord().getColonne() - piece2.getCoord().getColonne(); // Renvoi 0 si égale, -1 si inférieur ou +1 si suppérieur
+//				
+//				return comparaison;
+//				
+//			}});
+		
+		
+//		pieces.sort(new Comparator<PieceModel>() {
+//
+//			@Override
+//			public int compare(PieceModel piece1, PieceModel piece2) {
+//				
+//				int comparaisonLigne = piece1.getCoord().compareTo(piece2.getCoord());
+//				int comparaisonColonne = piece1.getCoord().getColonne() - piece2.getCoord().getColonne();
+//				int comparaison = comparaisonColonne - comparaisonLigne;
+//				
+//				return comparaison;
+//				
+//			}});
+		//Collections.sort(pieces);
 		int compteur = 1;
 		
 		// cr�ation d'un tableau 2D avec les noms des pi�ces � partir de la liste de pi�ces
 		for(PieceModel piece : this.pieces) {
 
+			//pieces.compa;
+			
 			//PieceSquareColor color = piece.getPieceColor();
 			st += piece.toString();
 			
-			if(compteur % 5 == 0) {
+			
+			if(compteur % 5 == 0) { //permet de voir si on a afficher 5 élement, si c'est le cas on coupe
 				st += "\n"; 
 				//System.out.println("\n");
 			}

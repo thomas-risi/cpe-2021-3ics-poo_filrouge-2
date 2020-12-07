@@ -5,7 +5,7 @@ import java.util.List;
 
 import atelier1.checkersGameNutsAndBolts.PieceSquareColor;
 
-public interface PieceModel {
+public interface PieceModel extends Comparable<PieceModel>{
 	
 	
 	/**
@@ -38,6 +38,7 @@ public interface PieceModel {
 	 * @return liste des coordonn�es des cases travers�es par itin�raire de d�placement
 	 */
 	public List<Coord> getCoordsOnItinerary(Coord targetCoord);
+
 	
 
 }
