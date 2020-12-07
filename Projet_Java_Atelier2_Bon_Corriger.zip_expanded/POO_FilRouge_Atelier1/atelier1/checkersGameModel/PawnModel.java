@@ -62,5 +62,29 @@ public class PawnModel extends AbstractPieceModel implements Promotable {
 		
 		return isPromotable;
 	}
+	
+	@Override
+	public int hashCode() {
+	    
+		int result = 1;
+	    //result = result + this.pieceColor.hashCode();
+	    //result = result + this.coord.hashCode();
+	    System.out.println(result);
+	    return result;
+	}
+	
+//	@Override
+//	public boolean equals(Object o) {
+//		
+//        if (o == this) { 
+//            return true; 
+//        }
+//		
+//		return false;
+//	    
+//
+//	}
+	
+	
 }
 
